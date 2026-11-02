@@ -1,0 +1,16 @@
+{
+  "name": "SYDONIA Control — Pilote licences",
+  "short_name": "SYDONIA Control",
+  "description": "Console de gestion des licences Sydonia.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e1d38",
+  "theme_color": "#14284b",
+  "icons": [
+    { "src": "./assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

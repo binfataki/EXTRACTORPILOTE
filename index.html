@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#092c63">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SYDONIA Control">
+  <title>SYDONIA Control — Pilote licences</title>
+  <link rel="icon" href="./assets/icon-192.png">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css?v=20261021-m1">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">S</span><div><b>SYDONIA Control</b><small>Pilotage des licences Sydonia</small></div></div>
+    <span class="dot" id="dot" title="État de la connexion"></span>
+    <button id="install" class="ibtn gold" type="button" aria-label="Installer l'application"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 18v2h14v-2"/></svg><span>Installer</span></button>
+    <button id="refresh" class="ibtn" type="button" aria-label="Actualiser"><svg viewBox="0 0 24 24" class="ic"><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"/></svg><span>Actualiser</span></button>
+    <button id="settings" class="ibtn" type="button" aria-label="Configuration"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 00-2-1.2L14.2 3h-4l-.4 2.7a7 7 0 00-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 000 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 002 1.2l.4 2.7h4l.4-2.7a7 7 0 002-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg><span>Configuration</span></button>
+  </header>
+
+  <main>
+    <section class="metrics" aria-label="Résumé">
+      <article><span>Installations</span><strong id="total">—</strong></article>
+      <article class="ok"><span>Codes configurés</span><strong id="active">—</strong></article>
+      <article class="warn"><span>À configurer</span><strong id="pending">—</strong></article>
+      <article class="alert"><span>À renouveler (7 j)</span><strong id="renew">—</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div><h1>Installations</h1><p class="sub" id="count">Aucune donnée chargée</p></div>
+        <span id="state" class="state">Connexion non configurée</span>
+      </div>
+      <div class="filters">
+        <label class="search"><span class="sr">Rechercher</span><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="search" type="search" placeholder="Entreprise ou empreinte PC" autocomplete="off"></label>
+        <div class="seg" id="chips" role="group" aria-label="Filtrer par configuration">
+          <button type="button" data-f="" aria-pressed="true">Toutes</button>
+          <button type="button" data-f="A_CONFIGURER" aria-pressed="false">À configurer</button>
+          <button type="button" data-f="CONFIGURE" aria-pressed="false">Configurées</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Entreprise</th><th>Empreinte PC</th><th>Code licence</th><th>Dernier contact</th><th>Mois licence</th><th>État</th><th><span class="sr">Actions</span></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+    <div id="message" class="sr" role="status" aria-live="polite"></div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-hidden="true"></div>
+
+  <dialog id="configDialog">
+    <form id="configForm">
+      <div class="dialog-head"><div><h2>Connexion au pilote</h2><p>Accès développeur</p></div><button type="button" class="close" data-close aria-label="Fermer">×</button></div>
+      <label>URL Apps Script pilote<input id="apiUrl" type="url" required placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off"></label>
+      <label>Contact du service client (facultatif)<input id="supportPhone" type="tel" inputmode="tel" placeholder="+243…" autocomplete="tel"></label>
+      <p class="help">L'URL du pilote Sydonia reste enregistrée uniquement dans ce navigateur.</p>
+      <div class="dialog-foot"><button type="button" class="btn sec" data-close>Annuler</button><button class="btn">Enregistrer et tester</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="editDialog">
+    <form id="editForm">
+      <div class="dialog-head"><div><h2>Gérer l'accès</h2><p>Autorisation du PC</p></div><button type="button" class="close" data-close aria-label="Fermer">×</button></div>
+      <input id="editSchool" type="hidden"><input id="editPc" type="hidden">
+      <p id="editIdentity" class="identity"></p>
+      <label>Nouveau code de licence (6 chiffres)<input id="editCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="123456" autocomplete="off"></label>
+      <label>Mois de licence<input id="editDate" type="month"></label>
+      <div class="chips" id="dateChips" aria-label="Raccourcis de mois"><button type="button" data-months="1">Mois suivant</button><button type="button" data-months="2">Dans 2 mois</button><button type="button" data-months="12">Dans 1 an</button></div>
+      <p class="help">Le code est enregistré sous forme d'empreinte. Le logiciel sera autorisé uniquement si le code saisi correspond à celui du fichier licence et si le PC est actif.</p>
+      <div class="diff" id="diff" aria-live="polite"></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+      <div class="dialog-foot">
+        <button type="button" class="btn sec" data-close>Annuler</button>
+        <button id="save-edit" class="btn save" disabled><span class="spin" aria-hidden="true"></span><svg viewBox="0 0 24 24" class="tick"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="lbl">Enregistrer l'accès</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="./config.js"></script>
+  <script src="./app.js?v=20261021-m1"></script>
+</body>
+</html>
+
