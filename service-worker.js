@@ -1,5 +1,5 @@
-const CACHE = "sydonia-control-shell-v1";
-const SHELL = ["./", "./index.html", "./styles.css?v=20261101-sydonia-4", "./config.js", "./app.js?v=20261101-sydonia-4", "./manifest.webmanifest", "./assets/LOGO_ENTREPRISE.png", "./assets/icon-192.png", "./assets/icon-512.png"];
+const CACHE = "sydonia-control-shell-v2";
+const SHELL = ["./", "./index.html", "./styles.css?v=20261111-sydonia-5", "./config.js?v=20261111-sydonia-2", "./app.js?v=20261111-sydonia-5", "./manifest.webmanifest", "./assets/LOGO_ENTREPRISE.png", "./assets/icon-192.png", "./assets/icon-512.png"];
 
 self.addEventListener("install", (event) => {
   // allSettled : un fichier manquant n'empêche plus l'installation du service worker.
